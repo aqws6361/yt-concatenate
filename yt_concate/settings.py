@@ -6,5 +6,5 @@ API_KEY = os.getenv('API_KEY')
 
 
 DOWNLOADS_DIR = 'downloads'
-VIDEO_DIR = os.path.join(DOWNLOADS_DIR,  'videos')
+VIDEOS_DIR = os.path.join(DOWNLOADS_DIR, 'videos')
 CAPTIONS_DIR = os.path.join(DOWNLOADS_DIR, 'captions')
