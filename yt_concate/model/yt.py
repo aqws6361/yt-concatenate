@@ -1,11 +1,12 @@
 import os
 
 from yt_concate.settings import VIDEOS_DIR
+
 from yt_concate.settings import CAPTIONS_DIR
 
 
 class YT:
-    def __int__(self, url):
+    def __init__(self, url):
         self.url = url
         self.id = self.get_video_id_from_url(self.url)
         self.caption_filepath = self.get_caption_filepath()
@@ -26,9 +27,9 @@ class YT:
         return '<YT(' + self.id + ')>'
 
     def __repr__(self):
-        content = ' : '.join([
-            'yt=' + str(self.yt),
-            'caption=' + str(self.caption),
-            'time=' + str(self.time),
+        content = ' , '.join([
+            'id=' + str(self.id),
+            'caption_filepath=' + str(self.caption_filepath),
+            'video_filepath=' + str(self.video_filepath),
         ])
         return '<Found(' + content + ')>'

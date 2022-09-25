@@ -1,4 +1,4 @@
-from yt_concate.pipeline.steps.step import StepException
+from .steps.step import StepException
 
 
 class Pipeline:

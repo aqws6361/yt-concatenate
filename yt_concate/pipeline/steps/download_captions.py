@@ -1,35 +1,38 @@
-import os
 import time
 
+import pytube
+from pytube import YouTube
+
+from yt_concate.pipeline.steps.log import config_logger
 from yt_concate.pipeline.steps.step import Step
 from yt_concate.pipeline.steps.step import StepException
 
-from pytube import YouTube
 
-
-class DownloadCaptions(Step):
+class DownloadCaption(Step):
     def process(self, data, inputs, utils):
+        logging = config_logger()
+        # download the package by:  pip install pytube
         start = time.time()
-
         for yt in data:
-            print('downloading caption for', yt.id)
-            if utils.caption_file_exists(yt.url):
-                print('found existing caption file')
+            logging.info('downloading caption for{}'.format(yt.id))
+            if utils.caption_file_exists(yt):
+                logging.info('find existing caption file')
                 continue
+
             try:
                 source = YouTube(yt.url)
-                caption = source.captions.get_by_language_code('a.en')
-                en_caption_convert_to_srt = caption.generate_srt_captions()
-                print(en_caption_convert_to_srt)
-
-            except (KeyError, AttributeError):
-                print("An Error for :", yt)
+                en_caption = source.captions.get_by_language_code('en')
+                en_caption_convert_to_srt = (en_caption.generate_srt_captions())
+            except (KeyError, AttributeError, pytube.exceptions.RegexMatchError):
+                logging.warning('Error when downloading caption for {}'.format(yt.url))
                 continue
 
-            text_file = open(utils.get_caption_filepath(yt), "w", encoding='utf-8')
+            # save the caption to a file named Output.txt
+            text_file = open(yt.caption_filepath, "w", encoding='utf-8')
             text_file.write(en_caption_convert_to_srt)
             text_file.close()
 
         end = time.time()
-        print('took', end - start, 'seconds')
+        logging.debug(f'took{end - start}s')
+
         return data

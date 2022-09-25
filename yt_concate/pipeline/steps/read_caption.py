@@ -14,7 +14,7 @@ class ReadCaption(Step):
                 caption = None
                 for line in f:
                     line = line.strip()
-                    if '-->' in line:
+                    if "-->" in line:
                         time_line = True
                         time = line
                         continue
